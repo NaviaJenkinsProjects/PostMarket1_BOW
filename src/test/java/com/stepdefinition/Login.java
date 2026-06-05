@@ -62,16 +62,31 @@ public class Login extends BaseClass {
 	static Set<String> windowHandles = driver.getWindowHandles();
 	static ArrayList<String> li = new ArrayList<String>(windowHandles);
 
-
-
-
+	
+	
 	@When("User Click the Watch List")
 	public void user_click_the_watch_list() throws InterruptedException {
-		Thread.sleep(8000);
+		Thread.sleep(4000);
+		
 		 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-		driver.findElement(By.xpath("(//div[@class='header-left']//descendant::span[@class='ind_syml'])[1]")).click();
+		 try {
+			
+			 WebElement element = driver
+						.findElement(By.xpath("(//div[@class='header-left']//descendant::span[@class='ind_syml'])[1]"));
+				Thread.sleep(1000);
+				Actions f=new Actions(driver);
+				f.moveToElement(element).perform();
+				Thread.sleep(1000);
+				f.click(element).perform();
+				
+		} catch (Exception e) {
+			
+			driver.findElement(By.xpath("(//div[@class='header-left']//descendant::span[@class='ind_syml'])[1]"))
+			.click();
+		}
 		
+		Thread.sleep(1000);
 		
 	}
 
@@ -84,6 +99,7 @@ public class Login extends BaseClass {
 		Thread.sleep(4000);
 	}
 
+
 	@When("User Click Watch List Again")
 	public void user_click_watch_list_again() throws InterruptedException {
 		WebElement element1 = driver
@@ -95,6 +111,8 @@ public class Login extends BaseClass {
 
 	@When("User mouse over the scrip {string}")
 	public void user_mouse_over_the_scrip(String string) throws InterruptedException {
+		
+		Thread.sleep(2000);Thread.sleep(2000);
 		WebElement contractSelectAgain = driver.findElement(
 				By.xpath("//div[@class='select-box active']//descendant::li//span[text()='" + string + "']"));
 
@@ -102,29 +120,48 @@ public class Login extends BaseClass {
 
 		Actions ac = new Actions(driver);
 		ac.moveToElement(contractSelectAgain).perform();
+		
+		driver.findElement(By.xpath("(//span[@data-symbol='"+string+"'])[2]")).click();
 
+		Thread.sleep(2000);
+		
 	}
 
 	@When("User Click the Charts")
 	public void user_click_the_charts() throws InterruptedException {
+		Thread.sleep(2000);
 		WebElement charts = driver.findElement(By.xpath(
-				"//div[@class='select-box active']//descendant::span[text()='Nifty 50']//ancestor::li//descendant::img"));
+				"//div[@class='select-box active']//descendant::span[text()='NIFTY 50']//ancestor::li//descendant::img"));
 		charts.click();
 
 		Thread.sleep(3000);
+	}
+	
+	@When("User Click the {string} Charts")
+	public void user_click_the_charts(String string) throws InterruptedException {
+	    
+		Thread.sleep(2000);
+		WebElement charts = driver.findElement(By.xpath(
+				"//div[@class='select-box active']//descendant::span[text()='Nifty 50']//ancestor::li//descendant::span[@class='ind_chart_btn']"));
+		charts.click();
+
+		Thread.sleep(3000);
+		
 	}
 
 	@When("User Click the Candles Icon")
 	public void user_click_the_candles_icon() throws InterruptedException {
 		WebElement firstiFrame = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
 
-		driver.switchTo().frame(firstiFrame);
+		WebElement iframe = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
+
+		driver.switchTo().frame(iframe);
 
 		Thread.sleep(3000);
 
-		WebElement iframe = driver.findElement(By.xpath("//iframe[@title='Financial Chart']"));
+		WebElement iframe1 = driver.findElement(By.xpath("//iframe[@title='Financial Chart']"));
 
-		driver.switchTo().frame(iframe);
+		driver.switchTo().frame(iframe1);
 
 		driver.findElement(By.xpath("//div[@id='header-toolbar-chart-styles']")).click();
 		Thread.sleep(3000);
@@ -132,18 +169,8 @@ public class Login extends BaseClass {
 
 	@When("User Choose Candle {string}")
 	public void user_choose_candle(String string) throws InterruptedException {
-		
-		try {
-			
-			driver.findElement(By.xpath("//div[@data-value='" + string + "']")).click();
-			Thread.sleep(2000);
-			
-		} catch (Exception e) {
-			
-			driver.findElement(By.xpath("//div[@data-value='" + string + "']")).click();
-			Thread.sleep(2000);
-		}
-		
+		driver.findElement(By.xpath("//div[@data-value='" + string + "']")).click();
+		Thread.sleep(2000);
 	}
 
 	@When("User Click the Mintues")
@@ -219,7 +246,8 @@ public class Login extends BaseClass {
 	public void user_click_the_search_box() throws InterruptedException {
 		Thread.sleep(4000);
 
-		driver.findElement(By.xpath("//input[@id='project-id']")).click();
+		 driver.findElement(By.xpath("//input[@id='project-id']")).click();
+		Thread.sleep(3000);
 	}
 
 	@When("User Search any {string} Script")
@@ -233,15 +261,17 @@ public class Login extends BaseClass {
 	public void user_mouse_over_and_add_a_script(String string) throws InterruptedException {
 		Thread.sleep(3000);
 
-		WebElement element = driver.findElement(By.xpath("//span[text()='" + string + "']//ancestor::li"));
+		// //tagname[contains(text(), 'value')]
+		WebElement element = driver.findElement(By.xpath("//span[contains(text(),'"+string+"')]//ancestor::li"));
 
 		Actions ac = new Actions(driver);
 		ac.moveToElement(element).perform();
-		Thread.sleep(3000);
+		Thread.sleep(7000);
 
-		driver.findElement(By.xpath("(//span[text()='"+string+"']//ancestor::li//descendant::span[@class='s_add_sym'])[1]")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'" + string + "')]//ancestor::li//descendant::span[@class='s_add_sym']")).click();
 	}
 
+	
 	@When("User POP Up Message Appear Verify POP UP")
 	public void user_pop_up_message_appear_verify_pop_up() throws InterruptedException {
 
@@ -297,6 +327,7 @@ public class Login extends BaseClass {
 
 	@When("User mouse the scrip Selected {string}")
 	public void user_mouse_the_scrip_selected(String string) throws InterruptedException {
+		
 		Thread.sleep(4000);
 
 		WebElement element2 = driver.findElement(By.xpath("(//span[text()='" + string + "'])[1]"));
@@ -307,7 +338,7 @@ public class Login extends BaseClass {
 	@When("User Click the Buy scrip for Selected {string} Scrip")
 	public void user_click_the_buy_scrip_for_selected_scrip(String string) throws InterruptedException {
 		WebElement buyScript = driver.findElement(By.xpath(
-				"(//span[text()='" + string + "']//ancestor::div[@class='m_bg_color']//descendant::span[text()='B'])[1]"));
+				"//span[text()='" + string + "']//ancestor::div[@class='m_bg_color']//descendant::span[text()='B']"));
 		buyScript.click();
 		Thread.sleep(2000);
 	}
@@ -319,32 +350,32 @@ public class Login extends BaseClass {
 		chooseMarket.click();
 		Thread.sleep(2000);
 
-		WebElement chooseLimit = driver.findElement(By.xpath("//label[text()='Limit']"));
-		chooseLimit.click();
 	}
 
 	@When("User Enter Amount in Price Text Box {string}")
 	public void user_enter_amount_in_price_text_box(String string) throws InterruptedException {
 
-		WebElement value = driver.findElement(By.xpath(
-				"(//span[text()='HDFCBANK']//ancestor::div[@class='m_bg_color']//descendant::span[@class='sys_vl'])[1]"));
-		String text2 = value.getText();
-		System.out.println(text2);
-
-		// Convert the string to a floating-point number
-		double value1 = Double.parseDouble(text2);
-
-		// Subtract 5 from the value
-		value1 -= 5;
-
-		// Convert the result back to a string
-		String result = Double.toString(value1);
-
-		WebElement clearPrice = driver.findElement(
-				By.xpath("//label[text()='Price']//parent::div[@class='tag-box']//descendant::input[@type='number']"));
-		clearPrice.clear();
-		clearPrice.sendKeys(result);
-		Thread.sleep(2000);
+//		WebElement value = driver.findElement(By.xpath(
+//				"//span[contains(text(),'Margin')]//child::a"));
+//		String text21 = value.getText();
+//		System.out.println(text21);
+//		String text2 = text21.replaceAll("[^0-9.]", "");
+//		// Convert the string to a floating-point number
+//		//double value1 = Double.parseDouble(text2);
+//		String roundedStr = String.format("%.2f", text2);
+//		System.out.println("Rounded String: " + roundedStr);
+//		// Subtract 5 from the value
+//		//value1 -= 5;
+//		//double valuue2=value1-2;
+//		// Convert the result back to a string
+//		//String result = Double.toString(valuue2);
+//		Thread.sleep(2000);
+//		WebElement clearPrice = driver.findElement(
+//				By.xpath("//label[text()='Price']//parent::div[@class='tag-box']//descendant::input[@type='number']"));
+//		clearPrice.clear();
+//		Thread.sleep(2000);
+//		clearPrice.sendKeys("238");
+//		Thread.sleep(2000);
 	}
 
 	@When("User Click Buy")
@@ -358,7 +389,8 @@ public class Login extends BaseClass {
 	@When("User Click Yes Popup")
 	public void user_click_yes_popup() throws InterruptedException {
 		Thread.sleep(2000);
-		driver.findElement(By.xpath("//div[@class='jconfirm-buttons']//child::button[text()='yes']")).click();
+		WebElement element = driver.findElement(By.xpath("//button[contains(text(),'yes')]"));
+		element.click();
 
 		Thread.sleep(2000);
 
@@ -366,13 +398,20 @@ public class Login extends BaseClass {
 
 	@When("Verify the Buy Scrip Notification Pop up")
 	public void verify_the_buy_scrip_notification_pop_up() {
-		WebElement buyPopup = driver.findElement(By.xpath("//span[@class='dhx_message__text']"));
-		if (buyPopup.isDisplayed()) {
-			System.err.println("Verify the buyPop is Displayed SuccessFully");
-		} else {
-			System.err.println("Verify the buyPop is Not Displayed ");
+		try {
+			
+			WebElement buyPopup = driver.findElement(By.xpath("//span[@class='dhx_message__text']"));
+			if (buyPopup.isDisplayed()) {
+				System.err.println("Verify the buyPop is Displayed SuccessFully");
+			} else {
+				System.err.println("Verify the buyPop is Not Displayed ");
 
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
+		
 	}
 
 	@When("User Click Pending Orders")
@@ -493,35 +532,39 @@ public class Login extends BaseClass {
 		driver.findElement(By.xpath("(//span[text()='Holdings']//parent::a)[1]")).click();
 		Thread.sleep(2000);
 	}
-	
-	//==============================================================================================
 
-	
-	
-	
-	//=====================================================================================================================================
+
 	
 
 	@When("User Search {string} in Searchbox")
-	public void user_search_in_searchbox(String string) {
-		driver.findElement(By.xpath("//input[@id='project-id']")).sendKeys(string);
+	public void user_search_in_searchbox(String string) throws InterruptedException {
+		Thread.sleep(2000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
+		driver.findElement(By.xpath("//input[@id='project-id']")).click();
+		
+		driver.findElement(By.xpath("//input[@id='project-id']")).sendKeys(string);
+		Thread.sleep(3000);
 	}
 
 	@When("User Click Futures")
-	public void user_click_futures() throws InterruptedException {
-		Thread.sleep(5000);
+	public void user_click_futures() throws InterruptedException, AWTException {
+		Thread.sleep(2000);
 		
-	
+		Robot robot=new Robot();
+		
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		Thread.sleep(2000);
+		
 		try {
 			
-			WebElement element = driver.findElement(By.xpath("(//span[text()='Futures'])[2]"));
-			element.click();
+			driver.findElement(By.xpath("(//span[text()='Futures'])[2]")).click();
 			
 		} catch (Exception e) {
 			
-			WebElement element = driver.findElement(By.xpath("(//span[text()='Futures'])[1]"));
-			element.click();
+			driver.findElement(By.xpath("(//span[text()='Futures'])[1]")).click();
+			
 		}
 
 		
@@ -534,7 +577,7 @@ public class Login extends BaseClass {
 		Thread.sleep(3000);
 
 		WebElement element = driver
-				.findElement(By.xpath("(//div[@class='srh_results act']/descendant::span[contains(text(),'"+string+"')])[1]"));
+				.findElement(By.xpath("(//span[contains(text(),'"+string+"')]//parent::div//child::span[@class='symbolsseries'])[1]"));
 		Actions ac = new Actions(driver);
 		ac.moveToElement(element).perform();
 		Thread.sleep(3000);
@@ -574,20 +617,26 @@ public class Login extends BaseClass {
 
 		Thread.sleep(2000);
 
-		driver.switchTo().defaultContent();
-		WebElement element = driver.findElement(By.xpath("//span[text()='" + string + "']//following-sibling::span[@class='symbolsseries']"));
-		Actions a=new Actions(driver);
-		a.moveToElement(element).perform();
-		a.click(element).perform();
-		
-		Thread.sleep(2000);
+		driver.findElement(By.xpath("(//span[contains(text(),'"+string+"')]//following-sibling::span[contains(text(),'NFO')])[1]"))
+				.click();
+
 	}
 
 	@When("User Click F&O")
 	public void user_click_f_o() throws InterruptedException {
 		Thread.sleep(2000);
+		
+		
+		try {
+			
+			driver.findElement(By.xpath("//button[@class='s_more md_btn1']")).click();
+			
+		} catch (Exception e) {
+			WebElement element = driver.findElement(By.xpath("//button[@class='s_more md_btn1']"));
+			element.click();
+		}
 
-		driver.findElement(By.xpath("//button[@class='s_more md_btn1']")).click();
+		
 	}
 
 	@When("User Click Cancel button in Ready Made Pop up")
@@ -617,18 +666,11 @@ public class Login extends BaseClass {
 		driver.switchTo().frame(element2);
 		Actions d=new Actions(driver);
 
-		List<WebElement> elements = driver.findElements(By.xpath("//button[text()='LTP']"));
-		
-		
-		for (WebElement element : elements) {
-			
-			Thread.sleep(2000);
-			d.moveToElement(element).perform();
-			d.click(element).perform();
-			Thread.sleep(2000);
-			
-		}
-		
+		WebElement element = driver.findElement(By.xpath("(//button[text()='LTP'])[1]"));
+		Thread.sleep(2000);
+		d.moveToElement(element).perform();
+		d.click(element).perform();
+		Thread.sleep(2000);
 	}
 
 	@When("User Verify the Fluctuating")
@@ -677,46 +719,43 @@ public class Login extends BaseClass {
 
 	@When("User Click Add Money")
 	public void user_click_add_money() throws InterruptedException {
-		
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 
 		try {
 			
-			WebElement element = driver.findElement(By.xpath("//span[contains(text(),'Add money')]//parent::button"));
-			 JavascriptExecutor js = (JavascriptExecutor) driver;
-		       js.executeScript("arguments[0].click();", element);
+			Actions d=new Actions(driver);
+			WebElement element = driver.findElement(By.xpath("//button[@data-dhx-id='btn_addmoney']"));
+			Thread.sleep(1000);
+			d.moveToElement(element).perform();
+			Thread.sleep(1000);
+			d.doubleClick(element).perform();
 
 			
 		} catch (Exception e) {
-			
-			driver.findElement(By.xpath("//button[@data-dhx-id='btn_addmoney']")).click();
-			
+			Thread.sleep(1000);
+			WebElement element = driver.findElement(By.xpath("//button[@data-dhx-id='btn_addmoney']//child::span"));
+			 JavascriptExecutor js = (JavascriptExecutor) driver;
+		       js.executeScript("arguments[0].click();", element);
+
 		}
 		
-		Thread.sleep(2000);
+		
 
+		Thread.sleep(2000);
+		
 	}
 
 	@When("User enter money in amount to add")
 	public void user_enter_money_in_amount_to_add() throws InterruptedException {
 		Thread.sleep(2000);
-		
-		try {
-			
-			WebElement element = driver.findElement(By.xpath("//button[@data-dhx-id='btn_addmoney']"));
-			Actions d=new Actions(driver);
-			d.moveToElement(element).perform();
-			d.click(element).perform();
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		Thread.sleep(2000);
-		WebElement addMoneyFrame = driver.findElement(By.xpath("(//iframe[@class='iframe_window'])[1]"));
+
+//		driver.switchTo().defaultContent();
+//		
+		WebElement addMoneyFrame = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
 		driver.switchTo().frame(addMoneyFrame);
-
+		Thread.sleep(1000);
 		driver.findElement(By.xpath("//input[@placeholder='Enter Amount']")).click();
-
+		Thread.sleep(1000);
 		WebElement enterAmount = driver.findElement(By.xpath("//input[@placeholder='Enter Amount']"));
 		enterAmount.clear();
 		Thread.sleep(1000);
@@ -726,7 +765,7 @@ public class Login extends BaseClass {
 		Thread.sleep(1000);
 
 		driver.findElement(By.xpath("//input[@id='deposit_amount']")).click();
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 
 		driver.switchTo().defaultContent();
 	}
@@ -781,6 +820,7 @@ public class Login extends BaseClass {
 		clickPayUsingUPI.click();
 
 		Thread.sleep(3000);
+
 		
 		WebElement clickPayUsingUPI1 = driver.findElement(By.xpath("//button[text()='Cancel Payment']"));
 		clickPayUsingUPI1.click();
@@ -1207,11 +1247,19 @@ public class Login extends BaseClass {
 	public void user_choose_basket(String string) throws InterruptedException {
 
 		Thread.sleep(5000);
+		
+		 JavascriptExecutor js = (JavascriptExecutor) driver;
+	       js.executeScript("window.scrollBy(0,500);");
+	       
+	       js.executeScript("window.scrollBy(0,500);");
 
-		driver.findElement(By.xpath("//span[text()='"+string+"']//ancestor::div[@class='basket_box']")).click();
-
+		Actions d=new Actions(driver);
+		WebElement element = driver.findElement(By.xpath("(//span[@class='basket_name']//ancestor::div[@class='basket_box'])[1]"));
+        d.moveToElement(element).perform();
 		Thread.sleep(1000);
 
+		d.click(element).perform();
+		Thread.sleep(1000);
 		driver.findElement(By.xpath("//button[text()='yes']")).click();
 		Thread.sleep(3000);
 
@@ -1224,42 +1272,24 @@ public class Login extends BaseClass {
 
 	@When("User Navigate to Basket and Click My Baskets")
 	public void user_navigate_to_basket_and_click_my_baskets() throws InterruptedException {
+		
+		
 		WebElement dashBoard = driver.findElement(By.xpath("(//span[text()='Dashboard']//ancestor::li)[1]"));
 
 		ac.moveToElement(dashBoard).perform();
 
-		Thread.sleep(5000);
+		Thread.sleep(1000);
 
 		driver.findElement(By.xpath("(//span[text()='Dashboard']//ancestor::li)[1]")).click();
 
 		driver.findElement(By.xpath("//label[text()='Basket']//parent::a")).click();
 
-		WebElement element = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
-		driver.switchTo().frame(element);
-		Thread.sleep(2000);
+		driver.switchTo().frame(0);
 
-		WebElement addBasket = driver.findElement(By.xpath("//button[@class='tab-link df-baskets']"));
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-	       js.executeScript("arguments[0].click();", addBasket);
-		Thread.sleep(1000);
-		driver.switchTo().defaultContent();
-		
-		WebElement element2 = driver.findElement(By.xpath("//div[@class='funds_show']"));
-		ac.moveToElement(element2).perform();
-		Thread.sleep(1000);
-		
-		WebElement element3 = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
-		driver.switchTo().frame(element3);
-
-		Thread.sleep(1000);
+		WebElement addBasket = driver.findElement(By.xpath("//button[contains(text(),'Add Basket')]"));
+		ac.moveToElement(addBasket).perform();
 		WebElement myBasket = driver.findElement(By.xpath("//button[text()='My Baskets']"));
 		myBasket.click();
-		
-		Thread.sleep(1000);
-
-	
-		Thread.sleep(1000);
-
 		
 
 	}
@@ -1267,9 +1297,15 @@ public class Login extends BaseClass {
 	@When("User Click Place Order for Particular {string} Baskets")
 	public void user_click_place_order_for_particular_baskets(String string) throws InterruptedException {
 
-		Thread.sleep(1000);
+		Thread.sleep(3000);
+		
+		driver.switchTo().defaultContent();
+		
+		WebElement element = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
+		
+		driver.switchTo().frame(element);
 
-		WebElement placeOrderParticularBaskets = driver.findElement(By.xpath("//p[text()='BASKET']//ancestor::div[@data-basketname='BASKET']//descendant::button[text()='Place Order']"));
+		WebElement placeOrderParticularBaskets = driver.findElement(By.xpath("//div[@data-basketname='"+string+"']//descendant::button[text()='Place Order']"));
 		placeOrderParticularBaskets.click();
 
 	}
@@ -1368,8 +1404,14 @@ public class Login extends BaseClass {
 	public void user_execute_following_orders() throws InterruptedException {
 
 		Thread.sleep(2000);
-
-		driver.findElement(By.xpath("//input[@onclick='placeBasketOrder()']//parent::div")).click();
+		
+		driver.switchTo().defaultContent();
+		
+		WebElement element = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
+		driver.switchTo().frame(element);
+		
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//input[@onclick='placeBasketOrder()']")).click();
 
 		Thread.sleep(1000);
 
@@ -1403,28 +1445,58 @@ public class Login extends BaseClass {
 
 	@When("User Select any Call LTP Buy")
 	public void user_select_any_call_ltp_buy() throws InterruptedException {
-		
+
+		Thread.sleep(2000);
 		
 		try {
 			
-			
-			WebElement element = driver.findElement(By.xpath("//span[@class='ready_mode_close']"));
-			element.click();
+			driver.findElement(By.xpath("//span[@class='ready_mode_close']")).click();
 			
 		} catch (Exception e) {
 			
-			System.out.println("ready_mode popup not Showing");
+			System.out.println("Not Visiable Ready Mode Popup Showing");
 		}
-
+		
+		Thread.sleep(1000);
+		driver.switchTo().defaultContent();
+		Thread.sleep(1000);
+		
+		WebElement element = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
+		driver.switchTo().frame(element);
+		Thread.sleep(1000);
+		
+		WebElement element2 = driver.findElement(By.xpath("//button[text()='Buy/Sell']"));
+		element2.click();
+		Thread.sleep(1000);
+		
 		WebElement buy = driver.findElement(By.xpath(
 				"(//div[@class='ops_bs_item get_attr_data act_left act_right']//descendant::span[@data-trade='B'])[1]"));
 		buy.click();
+		
+		driver.switchTo().defaultContent();
 		Thread.sleep(1000);
 
 	}
 
 	@When("User Select any Put LTP Sell")
 	public void user_select_any_put_ltp_sell() throws InterruptedException {
+		Thread.sleep(1000);
+		
+		WebElement element = driver.findElement(By.xpath("//iframe[@id='strategy_builder']"));
+		driver.switchTo().frame(element);
+		Thread.sleep(1000);
+		
+		WebElement element2 = driver.findElement(By.xpath("//span[@class='ready_mode_close']"));
+		
+		if (element2.isDisplayed()) {
+			
+			driver.findElement(By.xpath("//span[@class='ready_mode_close']")).click();
+			
+		} else {
+
+			System.err.println("Ready Mode Button Not Visiable");
+		}
+		
 		Thread.sleep(1000);
 
 		WebElement sell = driver.findElement(By.xpath(
@@ -1468,7 +1540,8 @@ public class Login extends BaseClass {
 	@When("User Click Save")
 	public void user_click_save() throws InterruptedException {
 
-		driver.findElement(By.xpath("//input[@value='Save']")).click();
+		WebElement element = driver.findElement(By.xpath("//input[@value='Save']"));
+		element.click();
 		Thread.sleep(1000);
 
 	}
@@ -1538,10 +1611,8 @@ public class Login extends BaseClass {
 	@When("User Click Tools {string}")
 	public void user_click_tools(String string) throws InterruptedException {
 		Thread.sleep(2000);
-		
-		WebElement element2 = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
-		driver.switchTo().frame(element2);
 
+		driver.switchTo().frame("analysis");
 		Thread.sleep(3000);
 		WebElement element = driver.findElement(By.xpath("//div[@class='menu_item']//descendant::h4[text()='Buy Back']"));
 		Actions ac = new Actions(driver);
@@ -1564,25 +1635,20 @@ public class Login extends BaseClass {
 		Set<String> windowHandles1 = driver.getWindowHandles();
 		Thread.sleep(2000);
 		ArrayList<String> li1 = new ArrayList<String>(windowHandles1);
-		int a = li1.size();
-		int size =a-1;
+		int size = li1.size();
 		System.out.println(size);
 
 		Thread.sleep(2000);
-		driver.switchTo().window(li1.get(size));
+		driver.switchTo().window(li1.get(1));
 
-		driver.findElement(By.xpath("//button[@class='btn-status pastback-cnt nav-link']")).click();
-		
-//		driver.switchTo().defaultContent();
-//		
-//		List<WebElement> elements = driver.findElements(By.xpath(
-//				"//table[@class='table footable trade-plus-table footable-loaded default']/tbody/tr/td"));
-//
-//		Thread.sleep(2000);
-//		for (WebElement webElement : elements) {
-//			String text = webElement.getText();
-//			System.out.println("BBO DashBoard Current Buybacks Script" + text);
-//		}
+		List<WebElement> elements = driver.findElements(By.xpath(
+				"//table[@class='table footable trade-plus-table footable-loaded custome breakpoint']/tbody/tr/td"));
+
+		Thread.sleep(2000);
+		for (WebElement webElement : elements) {
+			String text = webElement.getText();
+			System.out.println("BBO DashBoard Current Buybacks Script" + text);
+		}
 		Thread.sleep(2000);
 		driver.close();
 
@@ -1726,6 +1792,7 @@ public class Login extends BaseClass {
 	}
 
 	
+	
 	@When("User Select Net Banking and click Pay Via Net Banking")
 	public void user_select_net_banking_and_click_pay_via_net_banking() throws InterruptedException, AWTException {
 		Thread.sleep(2000);
@@ -1795,97 +1862,27 @@ public class Login extends BaseClass {
 
 	@When("User MouseOver Dashboard and click IPO\\/NFO and Click")
 	public void user_mouse_over_dashboard_and_click_ipo_nfo_and_click() throws InterruptedException {
-		
-		
-		
 		WebElement dashBoard = driver.findElement(By.xpath("(//span[text()='Dashboard']//ancestor::li)[1]"));
 
 		ac.moveToElement(dashBoard).perform();
 
 		Thread.sleep(2000);
 
-		driver.findElement(By.xpath("//label[text()='IPO/NFO/BOND']//ancestor::li")).click();
+		try {
+			
+			driver.findElement(By.xpath("//label[text()='IPO']//ancestor::li")).click();
+			
+		} catch (Exception e) {
+			
+			WebElement element = driver.findElement(By.xpath("(//label[text()='IPO']//ancestor::li)[1]"));
+			element.click();
+		}
 
 	}
-//
-//	@When("User Select Current IPO and Click Apply {string}")
-//	public void user_select_current_ipo_and_click_apply(String string) throws InterruptedException {
-//
-//		Thread.sleep(2000);
-//		Thread.sleep(2000);
-//		WebElement element2 = driver.findElement(By.xpath("//div[@class='funds_show']"));
-//		
-//		Actions ad = new Actions(driver);
-//		
-//		ad.moveToElement(element2).perform();
-//		Thread.sleep(2000);
-//		WebElement element = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
-//
-//		driver.switchTo().frame(element);
-//
-//		Thread.sleep(2000);
-//
-//		driver.findElement(By.xpath("(//input[@value='Apply'])[" + string + "]")).click();
-//		Thread.sleep(2000);
-//
-//	}
-//
-//	@When("User enter UPI ID , Category , Quantity \\(Lots) , BID Options and Price Cut")
-//	public void user_enter_upi_id_category_quantity_lots_bid_options_and_price_cut() throws InterruptedException {
-//
-//		driver.findElement(By.xpath("//input[@id='upiid']")).click();
-//		Thread.sleep(1000);
-//
-//		driver.findElement(By.xpath("//input[@id='upiid']")).sendKeys("kanniappanb7@oksbi");
-//		Thread.sleep(1000);
-//
-//		WebElement element = driver
-//				.findElement(By.xpath("//p[text()='Min Qty(Lot Size) : ']//following-sibling::span"));
-//		String text = element.getText();
-//
-//		System.out.println(text);
-//
-//		driver.findElement(By.xpath("(//input[@class='quantity'])[1]")).sendKeys(text);
-//		Thread.sleep(1000);
-//
-//		driver.findElement(By.xpath("(//input[@class='mc'])[1]")).click();
-//
-//		Thread.sleep(3000);
-//
-//	}
-//
-//	@When("User Click Agree and Click Submit")
-//	public void user_click_agree_and_click_submit() throws InterruptedException {
-//
-//		driver.findElement(By.xpath("(//input[@type='checkbox'])[7]")).click();
-//		Thread.sleep(3000);
-//
-//	}
-//
-//	@When("User Clik Yes For IPO Amount Payable")
-//	public void user_clik_yes_for_ipo_amount_payable() throws InterruptedException {
-//
-//		driver.findElement(By.xpath("//input[@value='SUBMIT']")).click();
-//		Thread.sleep(3000);
-//
-//		driver.findElement(By.xpath("//input[@value='yes']")).click();
-//
-//		Thread.sleep(10000);
-//
-////		driver.findElement(By.xpath("(//span[@class='pop_close2'])[2]")).click();
-////
-////		driver.findElement(By.xpath("(//span[@class='pop_close1'])[1]")).click();
-////
-////		driver.findElement(By.xpath("//span[@class='pop_close']")).click();
-//
-//		driver.switchTo().defaultContent();
-//
-//	}
-	
+
 	@When("User Select Current IPO and Click Apply {string}")
 	public void user_select_current_ipo_and_click_apply(String string) throws InterruptedException {
 
-		Thread.sleep(2000);
 		Thread.sleep(2000);
 		WebElement element2 = driver.findElement(By.xpath("//div[@class='funds_show']"));
 		
@@ -1907,7 +1904,7 @@ public class Login extends BaseClass {
 	       Thread.sleep(1000);
 	       
 
-		driver.findElement(By.xpath("(//a[text()='Apply'])["+string+"]")).click();
+		driver.findElement(By.xpath("(//a[text()='Apply'])[1]")).click();
 
 	}
 
@@ -1927,9 +1924,9 @@ public class Login extends BaseClass {
 		System.out.println(text);
 
 		driver.findElement(By.xpath("(//div[@class='cutoff']//child::span[@class='checkmark'])[1]")).click();
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 
-		driver.findElement(By.xpath("(//div[@class='cutoff']//child::span[@class='checkmark'])[1]")).click();
+		driver.findElement(By.xpath("(//div[@class='cutoff']//child::label[contains(text(),'Cut off')])[1]")).click();
 
 		Thread.sleep(3000);
 
@@ -2039,16 +2036,18 @@ public class Login extends BaseClass {
 
 		Thread.sleep(1000);
 
-		driver.switchTo().frame(0);
+		WebElement element2 = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
+		driver.switchTo().frame(element2);
 
-		WebElement element = driver.findElement(By.xpath("//span[text()='Explore']//parent::button"));
+		WebElement element = driver.findElement(By.xpath("//button[@id='tab-content-tab_explore']"));
 		Actions ac = new Actions(driver);
 
 		ac.moveToElement(element).perform();
 
 		Thread.sleep(2000);
 
-		ac.click(element).perform();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+	    js.executeScript("arguments[0].click();", element);
 		Thread.sleep(1000);
 
 	}
@@ -2103,10 +2102,20 @@ public class Login extends BaseClass {
 		ac.moveToElement(cancel).perform();
 
 		ac.click(cancel).perform();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//div[@class='py_back']")).click();
 		
-		WebElement element = driver.findElement(By.xpath("//div[@class='go_home']//child::img"));
-		element.click();
+		driver.switchTo().defaultContent();
 
+		Actions s=new Actions(driver);
+		WebElement element = driver.findElement(By.xpath("//div[@class='funds_show']"));
+		Thread.sleep(2000);
+		s.moveToElement(element).build().perform();
+		Thread.sleep(2000);
+		
+		driver.switchTo().frame(0);
+		//driver.findElement(By.xpath("///div[@class='go_home']//child::img")).click();
+		
 		Thread.sleep(2000);
 
 	}
@@ -2140,7 +2149,7 @@ public class Login extends BaseClass {
 //		Thread.sleep(1000);
 
 		try {
-			WebElement element = driver.findElement(By.xpath("//div[@class='alert_container']//child::p"));
+			WebElement element = driver.findElement(By.xpath("//div[@class='fail_txt']"));
 			String text = element.getText();
 			System.out.println("Element found! Text: " + text);
 		} catch (NoSuchElementException e) {
@@ -2152,30 +2161,38 @@ public class Login extends BaseClass {
 	public void user_search_scrip_add_in_market_watch(String string, String string2) throws InterruptedException {
 		Thread.sleep(5000);
 
-		driver.findElement(By.xpath("//input[@id='project-id']")).sendKeys(string2);
+		driver.findElement(By.xpath("//input[@id='project-id']")).sendKeys(string);
 
 		Thread.sleep(5000);
+		
+		try {
+			
+			driver.findElement(By.xpath("(//span[text()='Stocks'])[3]")).click();
+			
+		} catch (Exception e) {
+			
+			driver.findElement(By.xpath("(//span[text()='Stocks'])[2]")).click();
+		}
 
-		driver.findElement(By.xpath("(//span[text()='Stocks'])[2]")).click();
+		
 		Thread.sleep(2000);
 
-		driver.findElement(By.xpath("(//span[text()='All'])[2]")).click();
+		//driver.findElement(By.xpath("(//span[text()='All'])[2]")).click();
 
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
 
-		WebElement element = driver
-				.findElement(By.xpath("//div[@class='srh_results act']/descendant::li//descendant::span[text()='"
-						+ string2 + "']//following-sibling::span[text()='" + string + "']//ancestor::li"));
+		WebElement element = driver.findElement(By.xpath("//span[contains(text(),'"+string+"')]//parent::div//parent::li//child::span[text()='"+string2+"']"));
 		Actions ac = new Actions(driver);
 		ac.moveToElement(element).perform();
 		Thread.sleep(2000);
 
-		driver.findElement(By.xpath("//div[@class='srh_results act']/descendant::li//descendant::span[text()='"
-				+ string2 + "']//following-sibling::span[text()='" + string
-				+ "']//ancestor::li//descendant::span[@class='s_add_sym']")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'"+string+"')]//parent::div//following-sibling::div//child::span[@class='s_add_sym']")).click();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.xpath("//input[contains(@placeholder,'Search')]//following-sibling::span")).click();
 		Thread.sleep(2000);
 
-		driver.navigate().refresh();
+		//driver.navigate().refresh();
 
 	}
 
@@ -2183,15 +2200,40 @@ public class Login extends BaseClass {
 	public void user_mouseover_scrip_and_click_buy_button(String string, String string2) throws InterruptedException {
 		Thread.sleep(8000);
 
-		WebElement element = driver.findElement(By.xpath("//span[text()='BSE']//following-sibling::span[text()='SUNDARAM']"));
-		Actions ac1 = new Actions(driver);
-		ac1.moveToElement(element).perform();
-		Thread.sleep(4000);
+		try {
+			
+			WebElement element = driver.findElement(By.xpath("(//span[contains(text(),'"+string+"')]//parent::div//parent::div//child::span[text()='"+string2+"'])[1]"));
+			Actions ac1 = new Actions(driver);
+			
+			ac1.moveToElement(element).perform();
+			Thread.sleep(2000);
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", element);
 
-		WebElement element2 = driver.findElement(By.xpath("(//span[text()='" + string + "']//following-sibling::span[text()='" +string2+ "']//ancestor::li//descendant::span[text()='B'])[1]"));
-		element2.click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//button[@class='buy buyorder']")).click();
+			Thread.sleep(2000);
+			
+		} catch (Exception e) {
+			
+			WebElement element = driver.findElement(By.xpath("(//span[contains(text(),'"+string+"')]//parent::div//parent::div//child::span[text()='"+string2+"'])[1]"));
+			Actions ac1 = new Actions(driver);
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+		       js.executeScript("arguments[0].scrollIntoView();", element);
+
+
+			ac1.moveToElement(element).perform();
+			Thread.sleep(2000);
+			//JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", element);
+
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//button[@class='buy buyorder']")).click();
+			Thread.sleep(2000);
+			
+			
+		}
 		
-		Thread.sleep(2000);
 
 	}
 
@@ -2199,12 +2241,12 @@ public class Login extends BaseClass {
 	public void user_select_and_choose_and_click_buy_order(String string, String string2) throws InterruptedException {
 		Thread.sleep(2000);
 
-		driver.findElement(By.xpath("//label[text()='" + string + "']//parent::div[@class='radio']")).click();
+		driver.findElement(By.xpath("//label[text()='Market']//parent::div")).click();
 		Thread.sleep(1000);
 
-		driver.findElement(By.xpath("//label[text()='" + string2 + "']//parent::div[@class='radio']")).click();
-
-		Thread.sleep(2000);
+//		driver.findElement(By.xpath("//label[text()='" + string2 + "']//parent::div[@class='radio']")).click();
+//
+//		Thread.sleep(2000);
 
 		driver.findElement(By.xpath("//button[text()='BUY']")).click();
 		Thread.sleep(2000);
@@ -2395,13 +2437,17 @@ public class Login extends BaseClass {
 
 		Thread.sleep(1000);
 	}
+	
+	
+	
+	
 
 	@When("User Check the Exchange , Symbol , Series , Qty , Price , B\\/S , Trig Price , Produt and LUT")
 	public void user_check_the_exchange_symbol_series_qty_price_b_s_trig_price_produt_and_lut()
 			throws InterruptedException {
 		Thread.sleep(1000);
 
-		driver.findElement(By.xpath("//a[@title='Activity']")).click();
+		driver.findElement(By.xpath("//span[text()='Activity']//parent::a")).click();
 
 		Thread.sleep(1000);
 
@@ -2506,56 +2552,84 @@ public class Login extends BaseClass {
 	@When("User Click Exchange and Filter {string}")
 	public void user_click_exchange_and_filter(String string) throws InterruptedException {
 		Thread.sleep(1000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebElement element = driver.findElement(By.xpath("(//select[contains(@class,'dxi dxi-menu-down')])[1]"));
+		Select s=new Select(element);
+		
+		s.selectByVisibleText(string);
 
-		driver.findElement(By.xpath(
-				"//div[@data-dhx-id='Exch']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Exch']"))
-				.click();
-
-		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
+//		driver.findElement(By.xpath(
+//				"//div[@data-dhx-id='Exch']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Exch']"))
+//				.click();
+//
+//		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
 	}
 
 	@When("User Click Symbol and Filter {string}")
 	public void user_click_symbol_and_filter(String string) throws InterruptedException {
 		Thread.sleep(1000);
 
-		driver.findElement(By.xpath(
-				"//div[@data-dhx-id='Symbol']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Symbol']"))
-				.click();
-
-		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebElement element = driver.findElement(By.xpath("(//select[contains(@class,'dxi dxi-menu-down')])[2]"));
+		Select s=new Select(element);
+		
+		s.selectByVisibleText(string);
+//		driver.findElement(By.xpath(
+//				"//div[@data-dhx-id='Symbol']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Symbol']"))
+//				.click();
+//
+//		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
 	}
 
 	@When("User Click Series and Filter {string}")
 	public void user_click_series_and_filter(String string) throws InterruptedException {
 		Thread.sleep(1000);
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebElement element = driver.findElement(By.xpath("(//select[contains(@class,'dxi dxi-menu-down')])[3]"));
+		Select s=new Select(element);
+		
+		s.selectByVisibleText(string);
 
-		driver.findElement(By.xpath(
-				"//div[@data-dhx-id='Series']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Series']"))
-				.click();
-
-		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
+//		driver.findElement(By.xpath(
+//				"//div[@data-dhx-id='Series']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Series']"))
+//				.click();
+//
+//		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
 	}
 
 	@When("User Click B\\/S and Filter {string}")
 	public void user_click_b_s_and_filter(String string) throws InterruptedException {
 		Thread.sleep(1000);
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebElement element = driver.findElement(By.xpath("(//select[contains(@class,'dxi dxi-menu-down')])[4]"));
+		Select s=new Select(element);
+		
+		s.selectByVisibleText(string);
 
-		driver.findElement(By.xpath(
-				"//div[@data-dhx-id='BS']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='BS']"))
-				.click();
-
-		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
+//		driver.findElement(By.xpath(
+//				"//div[@data-dhx-id='BS']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='BS']"))
+//				.click();
+//
+//		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
 	}
 
 	@When("User Click Product and Filter {string}")
 	public void user_click_product_and_filter(String string) throws InterruptedException {
 		Thread.sleep(1000);
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebElement element = driver.findElement(By.xpath("(//select[contains(@class,'dxi dxi-menu-down')])[5]"));
+		Select s=new Select(element);
+		
+		s.selectByVisibleText(string);
 
-		driver.findElement(By.xpath(
-				"//div[@data-dhx-id='Product']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Product']"))
-				.click();
-
-		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
+//		driver.findElement(By.xpath(
+//				"//div[@data-dhx-id='Product']//parent::div//following-sibling::div//descendant::div[@data-dhx-id='Product']"))
+//				.click();
+//
+//		driver.findElement(By.xpath("//li[text()='" + string + "']")).click();
 
 		Thread.sleep(1000);
 
@@ -2657,6 +2731,7 @@ public class Login extends BaseClass {
 
 		driver.findElement(By.xpath("//a[text()='Segment']//parent::li")).click();
 
+		Thread.sleep(1000);
 		driver.findElement(By.xpath("//a[text()='Agree']")).click();
 
 		js.executeScript("window.scrollBy(0, 500)");
@@ -2792,7 +2867,8 @@ public class Login extends BaseClass {
 //		
 //			
 //	
-	//	driver.findElement(By.xpath("//a[text()='Agree']")).click();
+		
+		//driver.findElement(By.xpath("//a[text()='Agree']")).click();
 		Thread.sleep(1000);
 
 		driver.close();
@@ -2845,8 +2921,8 @@ public class Login extends BaseClass {
 	}
 
 	@When("Scroll Down Check the Brokerage & Charges")
-	public void scroll_down_check_the_brokerage_charges() {
-
+	public void scroll_down_check_the_brokerage_charges() throws InterruptedException {
+		Thread.sleep(2000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, 500)");
 		js.executeScript("window.scrollBy(0, 500)");
@@ -2857,12 +2933,13 @@ public class Login extends BaseClass {
 		ArrayList<String> li1 = new ArrayList<String>(windowHandles1);
 		int size = li1.size();
 		driver.switchTo().window(li1.get(0));
-
+		Thread.sleep(2000);
 	}
 
 	@When("User Click Support and Check")
 	public void user_click_support_and_check() throws InterruptedException {
 
+		Thread.sleep(4000);
 		driver.findElement(By.xpath("//li[text()='Support']")).click();
 
 		Set<String> windowHandles = driver.getWindowHandles();
@@ -2891,8 +2968,8 @@ public class Login extends BaseClass {
 	}
 
 	@When("User Click Keyboard Shortcut")
-	public void user_click_keyboard_shortcut() {
-
+	public void user_click_keyboard_shortcut() throws InterruptedException {
+		Thread.sleep(2000);
 		driver.findElement(By.xpath("//li[@onclick='s_key_fun();']//child::img")).click();
 
 	}
@@ -2913,8 +2990,13 @@ public class Login extends BaseClass {
 	@When("User Press Alt + O navigate to Pending Orders")
 	public void user_press_alt_o_navigate_to_pending_orders() throws AWTException, InterruptedException {
 		Thread.sleep(2000);
-		driver.findElement(By.xpath("//span[text()='Pending Orders']//parent::a")).click();
-
+		WebElement element = driver.findElement(By.xpath("//span[text()='Pending Orders']//parent::a"));
+		Actions d=new Actions(driver);
+		
+		d.moveToElement(element).perform();
+		Thread.sleep(2000);
+		d.click(element).perform();
+		Thread.sleep(2000);
 		Robot r = new Robot();
 
 		r.keyPress(KeyEvent.VK_ALT);
@@ -3061,7 +3143,7 @@ public class Login extends BaseClass {
 		Thread.sleep(1000);
 
 		driver.findElement(By.xpath("//a[text()='Next →']")).click();
-
+		Thread.sleep(2000);
 		driver.findElement(By.xpath("//a[text()='Done']")).click();
 		Thread.sleep(1000);
 
@@ -3497,7 +3579,16 @@ public class Login extends BaseClass {
 		driver.findElement(By.xpath("(//span[text()='Options'])[1]")).click();
 		Thread.sleep(2000);
 
-		driver.findElement(By.xpath("(//span[text()='Futures'])[1]")).click();
+		try {
+			
+			driver.findElement(By.xpath("(//span[text()='Futures'])[2]")).click();
+			
+		} catch (Exception e) {
+			
+			driver.findElement(By.xpath("(//span[text()='Futures'])[1]")).click();
+			
+		}
+		
 
 		Thread.sleep(2000);
 
@@ -3663,7 +3754,7 @@ public class Login extends BaseClass {
 
 	}
 
-
+	
 
 	@When("User Navigate to Backoffice and Click Activity")
 	public void user_navigate_to_backoffice_and_click_activity() throws InterruptedException {
@@ -3695,9 +3786,9 @@ public class Login extends BaseClass {
 		}
 			
 		
-
-		clickAnElement(
-				"//span[text()='Activity']//ancestor::span//following-sibling::b//child::em[@class='fa fa-plus-square-o']");
+		driver.manage().window().maximize();
+		Thread.sleep(2000);
+		clickAnElement("//span[text()='Activity']//ancestor::span//following-sibling::b//child::em[@class='fa fa-plus-square-o']");
 
 		Thread.sleep(1000);
 
@@ -3705,7 +3796,7 @@ public class Login extends BaseClass {
 
 	
 
-
+	
 
 	@When("User click View and Verify the data")
 	public void user_click_view_and_verify_the_data() throws InterruptedException, IOException, AWTException {
@@ -3718,19 +3809,15 @@ public class Login extends BaseClass {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
 		File des = new File(
-				"E:\\Current Project\\Navia_Testing_Live\\Image\\Backoffice.png");
+				"D:\\Projects\\Post_Markets_NTP\\ScreenShort\\Backoffice.png");
 		Files.copy(screenshotAs, des);
+
 		Thread.sleep(2000);
 		WebElement element = driver.findElement(By.xpath("//table[@id='ReportTable']"));
-		JavascriptExecutor js65 = (JavascriptExecutor) driver;
-	       js65.executeScript("window.scrollBy(0,500);");
-
-	       js65.executeScript("arguments[0].scrollIntoView(true);", element);
-		
-	       Thread.sleep(2000);
 		boolean displayed = element.isDisplayed();
 		System.out.println(displayed);
 
+		Thread.sleep(2000);
 		if (displayed == false) {
 
 			driver.switchTo().defaultContent();
@@ -4010,8 +4097,11 @@ public class Login extends BaseClass {
 	}
 
 	
+
 	@When("User click View and Verify the New Position")
 	public void user_click_view_and_verify_the_new_position() throws InterruptedException {
+		Thread.sleep(3000);
+		
 		WebElement element2 = driver.findElement(By.xpath("//table[@id='ReportTable']"));
 		boolean displayed = element2.isDisplayed();
 
@@ -4047,13 +4137,14 @@ public class Login extends BaseClass {
 		}
 	}
 
-	
+
 
 	@When("User click View and Verify the New DP Trans")
 	public void user_click_view_and_verify_the_new_dp_trans() throws InterruptedException {
 		
 		Thread.sleep(4000);
 		WebElement element2 = driver.findElement(By.xpath("//table[@id='ReportTable']"));
+		Thread.sleep(2000);
 		boolean displayed = element2.isDisplayed();
 		Thread.sleep(2000);
 
@@ -4069,25 +4160,25 @@ public class Login extends BaseClass {
 		
 	}
 	@When("User click the Analysis")
-	public void user_click_the_analysis() {
-	  
+	public void user_click_the_analysis() throws InterruptedException {
+		Thread.sleep(2000);
 		clickAnElement("//label[text()='Analysis']//parent::a");
-
+		Thread.sleep(2000);
 	
 	}
 
 	@When("User click filter")
-	public void user_click_filter() {
-		
+	public void user_click_filter() throws InterruptedException {
+		Thread.sleep(2000);
 		driver.switchTo().frame(0);
 	   
 		driver.findElement(By.xpath("//div[@class='filter']")).click();
-		
+		Thread.sleep(2000);
 	}
 
 	@When("User Filter Dividend {string}")
 	public void user_filter_dividend(String string) throws InterruptedException {
-		
+		Thread.sleep(2000);
 		WebElement slider = driver.findElement(By.xpath("//input[@id='range1']"));
 
         // Create an Actions instance
@@ -4107,7 +4198,7 @@ public class Login extends BaseClass {
 
 	@When("User Filter Value {string}")
 	public void user_filter_value(String string) throws InterruptedException {
-	 
+		Thread.sleep(2000);
 		
 		WebElement slider = driver.findElement(By.xpath("//input[@id='range2']"));
 
@@ -4131,7 +4222,7 @@ public class Login extends BaseClass {
         // Create an Actions instance
         Actions action = new Actions(driver);
 
-        action.clickAndHold(slider).moveByOffset(20, 0).release().perform();
+        action.clickAndHold(slider).moveByOffset(30, 0).release().perform();
 		Thread.sleep(2000);
 
         action.clickAndHold(slider).moveByOffset(-10, 0).release().perform();
@@ -4178,26 +4269,21 @@ public class Login extends BaseClass {
         action.clickAndHold(slider).moveByOffset(10, 0).release().perform();
 		Thread.sleep(2000);
 		
-		driver.findElement(By.xpath("//div[text()='Filter ']")).click();
+		//driver.findElement(By.xpath("//div[@class='filter']")).click();
 		Thread.sleep(2000);
 
 	}
 	
 	@When("User Remove The {string} Stock")
 	public void user_remove_the_stock(String string) throws InterruptedException {
-		Thread.sleep(2000);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-	    js.executeScript("window.scrollBy(0,1000);");
-		WebElement element = driver.findElement(By.xpath("(//span[text()='"+ string +"']//parent::div)[1]"));
-		
-	       js.executeScript("arguments[0].scrollIntoView(true);", element);
+		Thread.sleep(3000);
+		WebElement element = driver.findElement(By.xpath("//span[contains(text(),'" + string + "')]//parent::div"));
 
 		Actions ac = new Actions(driver);
 		ac.moveToElement(element).perform();
 		Thread.sleep(3000);
 
-		driver.findElement(By.xpath("(//span[text()='" + string + "']//following-sibling::span)[1]")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'" + string + "')]//following-sibling::span")).click();
 		Thread.sleep(2000);
 
 		driver.findElement(By.xpath("//button[text()=' Delete']")).click();
@@ -4208,7 +4294,7 @@ public class Login extends BaseClass {
 	@When("User Click View More")
 	public void user_click_view_more() throws InterruptedException {
 	 
-	driver.findElement(By.xpath("(//div[@class='arrow-btn'])[1]")).click();
+	driver.findElement(By.xpath("(//a[@onclick='OpenAnalys(this)'])[1]")).click();
 	Thread.sleep(2000);
 
 	driver.switchTo().defaultContent();
@@ -4252,10 +4338,22 @@ public class Login extends BaseClass {
 	}
 
 	@When("User Click Recent News & Updates")
-	public void user_click_recent_news_updates() {
+	public void user_click_recent_news_updates() throws InterruptedException {
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		
+	   WebElement element1 = driver.findElement(By.xpath("//iframe[@id='analysis']"));
+		
+		driver.switchTo().frame(element1);
+		
+	   WebElement element2 = driver.findElement(By.xpath("//iframe[@id='analysis_pro']"));
+	   Thread.sleep(2000);
+		driver.switchTo().frame(element2);
 	 
-		driver.findElement(By.xpath("//li[text()=' Recent News & Updates']")).click();
-
+		WebElement element = driver.findElement(By.xpath("//li[text()=' Recent News & Updates']"));
+		element.click();
+		Thread.sleep(2000);
 	}
 
 	@When("User Click About the Company")
@@ -4321,7 +4419,9 @@ public class Login extends BaseClass {
 	}
 
 	@When("User Click Management")
-	public void user_click_management() {
+	public void user_click_management() throws InterruptedException {
+		
+		Thread.sleep(2000);
 		driver.findElement(By.xpath("//li[text()=' Management']")).click();
 
 	}
@@ -4354,24 +4454,20 @@ public class Login extends BaseClass {
 	public void user_click_trading_view() throws InterruptedException, AWTException {
 		Thread.sleep(2000);
 
-//	WebElement element = driver.findElement(By.xpath("//iframe[@class='iframe_window']"));
-//		driver.switchTo().frame(element);
-//		
-//		driver.findElement(By.xpath("//div[@class='filter']")).click();
-//		driver.switchTo().parentFrame();
-//		
-//		
-//		
-//		Thread.sleep(2000);
-//		driver.findElement(By.xpath("//li[text()='Trading view']")).click();
-//		Thread.sleep(2000);
-//
-//		Robot r = new Robot();
-//		r.keyPress(KeyEvent.VK_END);
-//		r.keyRelease(KeyEvent.VK_END);
-//		Thread.sleep(2000);
-//		
-//		driver.switchTo().defaultContent();
+		driver.switchTo().parentFrame();
+		
+		driver.findElement(By.xpath("//li[text()='Trading view']")).click();
+		
+		Thread.sleep(2000);
+		
+		Thread.sleep(2000);
+
+		Robot r = new Robot();
+		r.keyPress(KeyEvent.VK_END);
+		r.keyRelease(KeyEvent.VK_END);
+		Thread.sleep(2000);
+		
+		driver.switchTo().defaultContent();
 		
 
 	}
@@ -4380,6 +4476,17 @@ public class Login extends BaseClass {
 	public void user_click_the_re_e_kyc() {
 		clickAnElement("//label[text()='Re-Ekyc']//parent::a");
 
+	}
+
+	@When("Navigate To Home Page to Navia")
+	public void navigate_to_home_page_to_navia() throws InterruptedException {
+		Thread.sleep(2000);
+//		driver.navigate().to("https://rocket.tradeplusonline.com/index.php");
+//		Thread.sleep(2000);
+		
+		driver.navigate().to("https://web.navia.co.in/login.php");
+		Thread.sleep(2000);
+		
 	}
 
 
@@ -4415,24 +4522,19 @@ public class Login extends BaseClass {
 
 		Thread.sleep(1000);
 
-		JavascriptExecutor js1 = (JavascriptExecutor) driver;
-		js1.executeScript("window.scrollBy(0, 500)");
-		js1.executeScript("window.scrollBy(0, 500)");
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0, 500)");
+		js.executeScript("window.scrollBy(0, 500)");
 		
+		js.executeScript("window.scrollBy(0, 500)");
+		js.executeScript("window.scrollBy(0, 500)");
+
+		WebElement element = driver.findElement(By.xpath("(//div[@class='md-dd-searchbox'])[1]"));
+		ac.moveToElement(element).perform();
 		Thread.sleep(1000);
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js1.executeScript("window.scrollBy(0, 500)");
-		js1.executeScript("window.scrollBy(0, 500)");
-
-		WebElement element = driver.findElement(By.xpath("//button[text()='ADD']"));
-	
-		js.executeScript("arguments[0].scrollIntoView(true);", element);
-		ac.moveToElement(element).perform();
-		Thread.sleep(3000);
-
-		WebElement element2 = driver.findElement(By.xpath("//ul[@id='spanSearchList']//descendant::div[contains(text(),'"  + string + "')]"));
-		element2.click();
+		driver.findElement(By.xpath("//ul[@id='spanSearchList']//descendant::div[contains(text(),'" + string + "')]"))
+				.click();
 		Thread.sleep(1000);
 
 	}
@@ -5531,22 +5633,17 @@ public void user_select_world_indices_commodities_forex_or_crypto(String string)
 	Thread.sleep(2000);
 
 	driver.findElement(By.xpath("//span[text()='" + string + "']//ancestor::button")).click();
+	Thread.sleep(2000);
+	
+	
 }
 
 @When("User Choose 1day , 1month , 3month , 1year , 5year or All {string}")
 public void user_choose_1day_1month_3month_1year_5year_or_all(String string) throws InterruptedException {
-	
-	
 	Thread.sleep(2000);
-	driver.switchTo().defaultContent();
-	Thread.sleep(4000);
-	
-	framesHandlingNaviaLogin();
 
-	WebElement element = driver.findElement(By.xpath("(//span[text()='"+ string +"']//ancestor::button)[1]"));
-	JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].click();", element);
-    
+	driver.findElement(By.xpath("(//span[text()='" + string + "']//ancestor::button)[2]")).click();
+
 	driver.switchTo().defaultContent();
 	Thread.sleep(2000);
 
@@ -5726,27 +5823,21 @@ public void user_verify_shown_all_api_partners() throws IOException {
 public void user_click_algo_bridge_verify() throws IOException, InterruptedException {
 
 	Thread.sleep(2000);
-	
-	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-	WebElement element = driver.findElement(By.xpath("//button[@id='algo-bridge']"));
-	
-	JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    
-    element.click();
-    Thread.sleep(2000);
+	driver.findElement(By.xpath("//button[@id='algo-bridge']")).click();
 
 }
 
 @When("User Click BackTesting and Verify")
 public void user_click_back_testing_and_verify() {
+	
 	driver.findElement(By.xpath("//button[@id='backtesting']")).click();
 
 }
 
 @When("User Click Community and Verify")
 public void user_click_community_and_verify() {
+	
 	driver.findElement(By.xpath("//button[@id='community']")).click();
 
 }
@@ -5867,6 +5958,200 @@ public void user_click_plus_one_by_one() throws InterruptedException, AWTExcepti
 	driver.switchTo().defaultContent();
 	driver.findElement(By.xpath("//label[text()='Tools']//parent::a")).click();
 }
+
+@When("User Select The Email Option")
+public void user_select_the_email_option() throws InterruptedException {
+    
+	Thread.sleep(2000);
+	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	
+	clickAnElement("//label[text()='Re-Ekyc']//parent::a");
+	
+	Thread.sleep(2000);
+	Set<String> windowHandles1 = driver.getWindowHandles();
+	ArrayList<String> li1 = new ArrayList<String>(windowHandles1);
+	int size = li1.size();
+	System.out.println(size);
+
+	//Thread.sleep(3000);
+	driver.switchTo().window(li1.get(1));
+	driver.findElement(By.xpath("//a[text()='Email']//parent::li")).click();
+	
+	Thread.sleep(2000);
+	WebElement element = driver.findElement(By.xpath("//a[text()='Service Status ']//parent::li"));
+	
+	JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+	
+    Thread.sleep(2000);
+	
+}
+
+@When("User Click The Income Declaration Option")
+public void user_click_the_income_declaration_option() throws InterruptedException {
+	
+	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	
+	//clickAnElement("//label[text()='Re-Ekyc']//parent::a");
+	
+	//Thread.sleep(2000);
+	driver.findElement(By.xpath("//a[text()='Income Declaration']//parent::li")).click();
+	
+	Thread.sleep(2000);
+	WebElement element = driver.findElement(By.xpath("//a[text()='Service Status ']//parent::li"));
+	
+	JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+	
+    Thread.sleep(2000);
+}
+@When("User Click The DDPI")
+public void user_click_the_ddpi() throws InterruptedException {
+   
+driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	
+	//clickAnElement("//label[text()='Re-Ekyc']//parent::a");
+	
+	//Thread.sleep(2000);
+	driver.findElement(By.xpath("//a[text()='DDPI']//parent::li")).click();
+	
+	Thread.sleep(3000);
+	
+	//driver.close();
+	
+	
+	
+}
+
+@Given("User Navigate to Navia Live")
+public void user_navigate_to_navia_live() throws InterruptedException, AWTException {
+	Thread.sleep(2000);
+	driver.get("https://yopmail.com/");
+
+	String currentUrl = driver.getCurrentUrl();
+	System.out.println(currentUrl);
+
+	WebElement yopMail = driver.findElement(By.xpath("//input[@placeholder='Enter your inbox here']"));
+	yopMail.sendKeys("naviatesting@yopmail.com");
+	
+
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//i[@class='material-icons-outlined f36']")).click();
+
+	WebElement createAccount = driver.findElement(By.xpath("//a[@title='YOPmail - Temporary email']"));
+	Actions ac = new Actions(driver);
+	Thread.sleep(2000);
+	ac.contextClick(createAccount).perform();
+
+	Robot robot = new Robot();
+	robot.keyPress(KeyEvent.VK_DOWN);
+	robot.keyRelease(KeyEvent.VK_DOWN);
+
+	robot.keyPress(KeyEvent.VK_DOWN);
+	robot.keyRelease(KeyEvent.VK_DOWN);
+
+	robot.keyPress(KeyEvent.VK_ENTER);
+	robot.keyRelease(KeyEvent.VK_ENTER);
+
+	Thread.sleep(8000);
+
+	Set<String> windowHandles = driver.getWindowHandles();
+	ArrayList<String> li = new ArrayList<String>(windowHandles);
+	int size = li.size();
+	System.out.println(size);
+
+	driver.switchTo().window(li.get(1));
+
+	driver.navigate().refresh();
+
+	getUrl("https://rocket.tradeplusonline.com/login.php");
+	// getUrl("https://rocket.tradeplusonline.com/beta-v2/login.php");
+
+	sleep(7000);
+
+	// clickOnElement(l.getLoginWithClientCode());
+	// driver.navigate().refresh();
+	WebElement element6= driver.findElement(By.xpath("(//button[@id='login_fsmt1'])[2]"));
+	element6.click();
+	sleep(5000);
+	//
+	driver.findElement(By.xpath("//input[@name='clientCode']")).click();
+
+	sleep(1000);
+
+	sendValues(l.getClientCode(), "63748379");
+
+	clickOnElement(l.getPassWord());
+	sleep(1000);
+
+	sendValues(l.getPassWord(), "Testing@321");
+	
+
+	clickOnElement(l.getCheckBox());
+
+	clickOnElement(l.getLogin());
+
+	driver.switchTo().window(li.get(0));
+
+	Thread.sleep(32000);
+
+	WebElement refresh = driver.findElement(By.xpath("//button[@id='refresh']"));
+	refresh.click();
+
+	WebElement iframe = driver.findElement(By.xpath("//iframe[@id='ifmail']"));
+
+	driver.switchTo().frame(iframe);
+
+	Thread.sleep(5000);
+
+	WebElement otp = driver.findElement(
+			By.xpath("//font[text()='Your One Time Password (OTP) for BOLTPlus On Web login is ']//child::strong"));
+	String text = otp.getText();
+	System.err.println(text);
+
+	driver.switchTo().defaultContent();
+
+	Thread.sleep(4000);
+
+	driver.switchTo().window(li.get(1));
+	clickOnElement(l.getOtpClick());
+	Thread.sleep(3000);
+
+	driver.findElement(By.xpath("//input[@id='userotp']")).sendKeys(text);
+
+	driver.switchTo().window(li.get(0));
+
+	driver.close();
+
+	driver.switchTo().window(li.get(1));
+
+}
+
+
+@When("Navigate to home page in Live")
+public void navigate_to_home_page_in_live() throws InterruptedException {
+    
+//	Thread.sleep(2000);
+//	driver.navigate().to("https://rocket.tradeplusonline.com/index.php");
+//	Thread.sleep(2000);
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
